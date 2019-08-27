@@ -1,0 +1,5 @@
+! Typeface: Anonymice Nerd Font
+#define typeface_bar_glyph  Anonymice Nerd Font Medium 13
+#define typeface_bar        pango:Anonymice Nerd Font Medium 13, Anonymice Nerd Font 13
+#define typeface_rofi       Anonymice Nerd Font Medium 16
+#define typeface_terminal   Anonymice Nerd Font:pixelsize=16:antialias=true:autohint=true

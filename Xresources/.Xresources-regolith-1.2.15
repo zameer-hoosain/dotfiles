@@ -11,7 +11,8 @@
 ! -- Styles - Fonts
 !
 ! Uncomment one and only one of the following font definitions:
-#include ".Xresources.d/typeface-sourcecodepro"
+!#include ".Xresources.d/typeface-sourcecodepro"
+#include ".Xresources.d/typeface-anonymous"
 !#include ".Xresources.d/typeface-sourcecodepro"
 
 ! -- Styles - Theme
@@ -34,4 +35,4 @@
 ! Add the following line to your ~/.Xresources file to prevent further
 ! updates to your configuration, and set the value to false.  Note this 
 ! may break your UI if backwards incompatible changes are added in the future.
-regolith.policy.update: true
+regolith.policy.update: false
