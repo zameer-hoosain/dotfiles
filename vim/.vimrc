@@ -119,6 +119,9 @@ let g:ycm_autoclose_preview_window_after_insertion = 1 " Close preview window wh
 " ALE config
 let g:ale_python_pylint_options = '--load-plugins pylint_django'
 
+nmap <silent> <C-j> :ALENext<cr>
+nmap <silent> <C-k> :ALEPrevious<cr>
+
 " Nerdtree config
 autocmd vimenter * NERDTree
 
