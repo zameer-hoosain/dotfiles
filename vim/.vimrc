@@ -173,4 +173,4 @@ set rtp+=~/.fzf
 " Map ctrl-p to fzf
 map <C-p> :FZF<CR>
 
-set colorcolumn=81
+set colorcolumn=121
