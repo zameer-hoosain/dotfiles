@@ -15,6 +15,8 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'dense-analysis/ale'
 Plugin 'itchyny/lightline.vim'
 Plugin 'tmhedberg/SimpylFold'
+Plugin 'frazrepo/vim-rainbow'
+Plugin 'Yggdroot/indentLine'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -117,7 +119,7 @@ let g:ycm_complete_in_strings = 1 " Completion in string
 let g:ycm_autoclose_preview_window_after_insertion = 1 " Close preview window when leaving insert mode
 
 " ALE config
-let g:ale_python_pylint_options = '--load-plugins pylint_django'
+" let g:ale_python_pylint_options = '--load-plugins pylint_django'
 
 nmap <silent> <C-j> :ALENext<cr>
 nmap <silent> <C-k> :ALEPrevious<cr>
@@ -174,3 +176,6 @@ set rtp+=~/.fzf
 map <C-p> :FZF<CR>
 
 set colorcolumn=121
+
+" Vim rainbow
+let g:rainbow_active = 1
