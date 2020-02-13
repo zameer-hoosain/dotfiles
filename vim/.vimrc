@@ -17,6 +17,7 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'frazrepo/vim-rainbow'
 Plugin 'Yggdroot/indentLine'
+Plugin 'rust-lang/rust.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
