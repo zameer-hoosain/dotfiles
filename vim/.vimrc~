@@ -9,7 +9,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'sukima/xmledit'
 Plugin 'scrooloose/nerdtree'
 Plugin 'dense-analysis/ale'
@@ -20,23 +20,6 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
-Plugin 'tpope/vim-surround'
-Plugin 'Vimjas/vim-python-pep8-indent'
-Plugin 'davidhalter/jedi-vim'   " jedi for python
-Plugin 'chrisbra/Colorizer'
-
-Plugin 'roxma/nvim-yarp'
-Plugin 'ncm2/ncm2'
-Plugin 'ncm2/ncm2-bufword'
-Plugin 'ncm2/ncm2-path'
-Plugin 'ncm2/ncm2-jedi'
-Plugin 'ncm2/ncm2-tern',  {'do': 'npm install'}
-Plugin 'ncm2/ncm2-cssomni'
-Plugin 'ncm2/ncm2-racer'
-Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plugin 'mattn/emmet-vim'
-Plugin 'posva/vim-vue'
-Plugin 'editorconfig/editorconfig-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -71,7 +54,16 @@ if v:progname =~? "evim"
 endif
 
 " Get the defaults that most users want.
-" source $VIMRUNTIME/defaults.vim
+source $VIMRUNTIME/defaults.vim
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file (restore to previous version)
+  if has('persistent_undo')
+    set undofile	" keep an undo file (undo changes after closing)
+  endif
+endif
 
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
@@ -102,36 +94,25 @@ endif " has("autocmd")
 " compatible.
 " The ! means the package won't be loaded right away but when plugins are
 " loaded during initialization.
-"if has('syntax') && has('eval')
-"  packadd! matchit
-"endif
+if has('syntax') && has('eval')
+  packadd! matchit
+endif
 
 set clipboard=unnamed
 
 autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
-autocmd BufEnter *.vue set filetype=vue
 
 syntax enable
-let g:lightline = { 'colorscheme': 'one' }
-colorscheme dracula
-set number
+" set number
 " set relativenumber
 set expandtab
 set ttyfast
 set shiftwidth=4
 set showmatch
 set nowrap
-set undodir =~/.vim/undodir
-set undofile
-set nobackup
-set ignorecase
-set smartcase
-set incsearch
 let python_highlight_all=1
-set textwidth=100
-set formatoptions-=t
 
 " YCM config
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
@@ -170,21 +151,21 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Lightline config
 set laststatus=2
 
-let g:python3_host_prog = '/usr/bin/python3'
 " Set vim to look in venv
 " python with virtualenv support
-"py3 << EOF
-"import os
-"import sys
-"if 'VIRTUAL_ENV' in os.environ:
-"  project_base_dir = os.environ['VIRTUAL_ENV']
-"  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-"  exec(open(activate_this).read(), dict(__file__=activate_this))
-"EOF
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  exec(open(activate_this).read(), dict(__file__=activate_this))
+EOF
 
 " Enable code folding
 set foldmethod=indent
 set foldlevel=99
+nnoremap <space> za
 
 " Simply fold show docstring
 let g:SimpylFold_docstring_preview=0
@@ -199,101 +180,10 @@ set rtp+=~/.fzf
 map <C-p> :FZF<CR>
 map <C-g> :Ag<CR>
 
-set colorcolumn=101
+set colorcolumn=121
 
 " Vim rainbow
 let g:rainbow_active = 1
 
 set mouse=
-"set ttymouse=
-
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-
-" IMPORTANT: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-
-" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-" found' messages
-set shortmess+=c
-
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
-
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" wrap existing omnifunc
-" Note that omnifunc does not run in background and may probably block the
-" editor. If you don't want to be blocked by omnifunc too often, you could
-" add 180ms delay before the omni wrapper:
-"  'on_complete': ['ncm2#on_complete#delay', 180,
-"               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-au User Ncm2Plugin call ncm2#register_source({
-        \ 'name' : 'css',
-        \ 'priority': 9,
-        \ 'subscope_enable': 1,
-        \ 'scope': ['css','scss'],
-        \ 'mark': 'css',
-        \ 'word_pattern': '[\w\-]+',
-        \ 'complete_pattern': ':\s*',
-        \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-        \ })
-
-" jedi options
-let g:jedi#auto_initialization = 1
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_command = ""
-let g:jedi#show_call_signatures = "1"
-let g:jedi#show_call_signatures_delay = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#show_call_signatures_modes = 'i'  " ni = also in normal mode
-let g:jedi#enable_speed_debugging=0
-let g:jedi#goto_stubs_command = ""
-
-" map leader to space
-let mapleader = " "
-
-map <leader>h :wincmd h<CR>
-map <leader>j :wincmd j<CR>
-map <leader>k :wincmd k<CR>
-map <leader>l :wincmd l<CR>
-nnoremap <leader>s :wincmd s<CR>
-map <leader>v :wincmd v<CR>
-map <F3> f,a<CR><Esc>
-map <F2> "+y<Esc>
-map <F4> "+p<Esc>
-map <leader>e <C-Y>,
-
-map <leader>f za
-
-" Jump to last position in file
-autocmd BufReadPost *
-            \ if line("'\"") > 0 && line("'\"") <= line("$") |
-            \   exe "normal g`\"" |
-            \ endif
-
-" Markdown preview
-" set to 1, nvim will open the preview window after entering the markdown buffer
-" default: 0
-let g:mkdp_auto_start = 1
-
-" set to 1, the nvim will auto close current preview window when change
-" from markdown buffer to another buffer
-" default: 1
-let g:mkdp_auto_close = 1
-
-" Enable emmet only for html and css
-let g:user_emmet_install_global = 0
-autocmd FileType html,htmldjango,css,vue EmmetInstall
-
-let g:vue_pre_processors = 'detect_on_enter'
+set ttymouse=
