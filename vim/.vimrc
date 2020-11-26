@@ -9,21 +9,20 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-"Plugin 'Valloric/YouCompleteMe'
 Plugin 'sukima/xmledit'
 Plugin 'scrooloose/nerdtree'
 Plugin 'dense-analysis/ale'
 Plugin 'itchyny/lightline.vim'
 Plugin 'tmhedberg/SimpylFold'
-Plugin 'frazrepo/vim-rainbow'
 Plugin 'Yggdroot/indentLine'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
 Plugin 'tpope/vim-surround'
 Plugin 'Vimjas/vim-python-pep8-indent'
-Plugin 'davidhalter/jedi-vim'   " jedi for python
-Plugin 'chrisbra/Colorizer'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ap/vim-css-color'
+Plugin 'numirias/semshi'
 
 Plugin 'roxma/nvim-yarp'
 Plugin 'ncm2/ncm2'
@@ -38,6 +37,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'posva/vim-vue'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rust-lang/rust.vim'
+Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -114,6 +114,7 @@ autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 autocmd BufEnter *.vue set filetype=vue
 
+syntax on
 syntax enable
 let g:lightline = { 'colorscheme': 'one' }
 colorscheme dracula
@@ -135,15 +136,17 @@ set textwidth=100
 set formatoptions-=t
 
 " YCM config
-let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
-let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
-let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
-let g:ycm_complete_in_comments = 1 " Completion in comments
-let g:ycm_complete_in_strings = 1 " Completion in string
-let g:ycm_autoclose_preview_window_after_insertion = 1 " Close preview window when leaving insert mode
+" let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+" let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+" let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
+" let g:ycm_complete_in_comments = 1 " Completion in comments
+" let g:ycm_complete_in_strings = 1 " Completion in string
+" let g:ycm_autoclose_preview_window_after_insertion = 1 " Close preview window when leaving insert mode
 
 " ALE config
 " let g:ale_python_pylint_options = '--load-plugins pylint_django'
+let g:ale_disable_lsp = 1
+let g:ale_lint_delay = 400
 
 nmap <silent> <C-j> :ALENext<cr>
 nmap <silent> <C-k> :ALEPrevious<cr>
@@ -201,9 +204,6 @@ map <C-p> :FZF<CR>
 map <C-g> :Ag<CR>
 
 set colorcolumn=101
-
-" Vim rainbow
-let g:rainbow_active = 1
 
 set mouse=
 "set ttymouse=
@@ -274,8 +274,12 @@ map <F3> f,a<CR><Esc>
 map <F2> "+y<Esc>
 map <F4> "+p<Esc>
 map <leader>e <C-Y>,
+map <leader>b :Git blame<CR>
+map <leader>w :W<CR>
 
 map <leader>f za
+
+nmap =j :%!python -m json.tool<CR>
 
 " Jump to last position in file
 autocmd BufReadPost *
@@ -298,3 +302,7 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,htmldjango,css,vue EmmetInstall
 
 let g:vue_pre_processors = 'detect_on_enter'
+
+" Semshi config
+" Disable marking the selected variables
+let g:semshi#mark_selected_nodes = 1
